@@ -23,9 +23,11 @@ uchar4 *pixel_buffer;
 uchar4 *spectrum_buffer;
 uchar4 *spectrogram_buffer;
 uchar4 *saved_buffer;
-int *saved_width;
-int *saved_height;
-int *current_mode;
 float *volume;
+int *status;
+#define current_mode (&status[0])
+#define free_running (status[1])
+#define saved_width (&status[2])
+#define saved_height (&status[3])
 
 #endif

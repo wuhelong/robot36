@@ -47,7 +47,7 @@ void reset_buffer()
         pixel_buffer[i] = rgb(0, 0, 0);
 }
 
-static void save_buffer()
+void save_buffer()
 {
     free_running = 1;
     if (!buffer_cleared)

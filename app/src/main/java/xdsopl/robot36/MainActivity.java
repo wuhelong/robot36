@@ -56,7 +56,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements Decoder.Callback {
     private Decoder decoder;
     private ImageView image;
     private Bitmap bitmap;
@@ -228,11 +228,13 @@ public class MainActivity extends Activity {
             return;
         try {
             decoder = new Decoder(this,
+                    this,
+                    null,
                     (SpectrumView) findViewById(R.id.spectrum),
                     (SpectrumView) findViewById(R.id.spectrogram),
-                    (ImageView) findViewById(R.id.image),
                     (VUMeterView) findViewById(R.id.meter)
             );
+            decoder.setImageView((ImageView) findViewById(R.id.image));
             decoder.enable_analyzer(enableAnalyzer);
             showNotification();
             updateMenuButtons();
@@ -411,5 +413,52 @@ public class MainActivity extends Activity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private int modeToName(int mode) {
+        switch (mode) {
+            default:
+            case Decoder.mode_raw:
+                return R.string.action_raw_mode;
+            case Decoder.mode_robot36:
+                return R.string.action_robot36_mode;
+            case Decoder.mode_robot72:
+                return R.string.action_robot72_mode;
+            case Decoder.mode_martin1:
+                return R.string.action_martin1_mode;
+            case Decoder.mode_martin2:
+                return R.string.action_martin2_mode;
+            case Decoder.mode_scottie1:
+                return R.string.action_scottie1_mode;
+            case Decoder.mode_scottie2:
+                return R.string.action_scottie2_mode;
+            case Decoder.mode_scottieDX:
+                return R.string.action_scottieDX_mode;
+            case Decoder.mode_wraaseSC2_180:
+                return R.string.action_wraaseSC2_180_mode;
+            case Decoder.mode_pd50:
+                return R.string.action_pd50_mode;
+            case Decoder.mode_pd90:
+                return R.string.action_pd90_mode;
+            case Decoder.mode_pd120:
+                return R.string.action_pd120_mode;
+            case Decoder.mode_pd160:
+                return R.string.action_pd160_mode;
+            case Decoder.mode_pd180:
+                return R.string.action_pd180_mode;
+            case Decoder.mode_pd240:
+                return R.string.action_pd240_mode;
+            case Decoder.mode_pd290:
+                return R.string.action_pd290_mode;
+        }
+    }
+    @Override
+    public void onReceived(Bitmap image) {
+        storeBitmap(image);
+    }
+
+    @Override
+    public void onModeChanged(boolean detected, int mode) {
+        updateTitle(getString(modeToName(mode)));
     }
 }

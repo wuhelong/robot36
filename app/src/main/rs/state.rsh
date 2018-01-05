@@ -26,7 +26,7 @@ static int disable_analyzer;
 static int automatic_mode_detection;
 static int debug_mode;
 static int current_decoder;
-static int user_blur, blur_power, free_running;
+static int user_blur, blur_power;
 static int sample_rate, sync_pos, prev_sync_pos;
 static int maximum_variance, maximum_absolute_deviaton;
 static int scanline_length, minimum_length, maximum_length;
