@@ -18,8 +18,8 @@ limitations under the License.
 package xdsopl.robot36;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
@@ -36,16 +36,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
 import java.io.File;
@@ -56,7 +58,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends Activity implements Decoder.Callback {
+public class MainActivity extends AppCompatActivity implements Decoder.Callback {
     private Decoder decoder;
     private ImageView image;
     private Bitmap bitmap;
@@ -64,13 +66,22 @@ public class MainActivity extends Activity implements Decoder.Callback {
     private ShareActionProvider share;
     private int notifyID = 1;
     private int permissionsID = 2;
+    private static final String channelID = "Robot36";
     private boolean enableAnalyzer = true;
     private Menu menu;
 
     private void showNotification() {
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pending = PendingIntent.getActivity(this, 0, intent, 0);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = manager.getNotificationChannel(channelID);
+            if (channel == null) {
+                channel = new NotificationChannel(channelID, getString(R.string.app_name), NotificationManager.IMPORTANCE_LOW);
+                channel.setDescription(getString(R.string.decoder_running));
+                manager.createNotificationChannel(channel);
+            }
+        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelID)
             .setSmallIcon(R.drawable.ic_notification)
             .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
             .setContentTitle(getString(R.string.app_name))
@@ -275,7 +286,8 @@ public class MainActivity extends Activity implements Decoder.Callback {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         this.menu = menu;
         updateMenuButtons();
-        share = (ShareActionProvider)menu.findItem(R.id.menu_item_share).getActionProvider();
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+        share = (ShareActionProvider)MenuItemCompat.getActionProvider(item);
         return true;
     }
 

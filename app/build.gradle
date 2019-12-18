@@ -1,16 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.2"
-
+    buildToolsVersion "29.0.2"
+    compileSdkVersion 29
     defaultConfig {
         applicationId "xdsopl.robot36"
-        minSdkVersion 15
-        targetSdkVersion 27
-        versionCode 37
-        versionName "1.35"
-        renderscriptTargetApi 18
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode 44
+        versionName "1.43"
+        renderscriptTargetApi 21
         renderscriptSupportModeEnabled true
     }
     buildTypes {
@@ -22,6 +21,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:support-v4:27.0.2"
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.0.0'
 }

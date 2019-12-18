@@ -21,12 +21,9 @@ import android.graphics.Bitmap;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.WorkerThread;
-import android.support.v8.renderscript.Allocation;
-import android.support.v8.renderscript.Element;
-import android.support.v8.renderscript.RenderScript;
+import androidx.renderscript.Allocation;
+import androidx.renderscript.Element;
+import androidx.renderscript.RenderScript;
 
 import java.io.Closeable;
 import java.io.IOException;
